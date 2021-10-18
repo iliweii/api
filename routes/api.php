@@ -13,6 +13,16 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+$api = app('Dingo\Api\Routing\Router');
+$api->version('v1', [
+    'namespace' => 'App\Http\Controllers\Api',
+    'middleware' => ['bindings', 'cors'], //添加这个中间件才能使用模型绑定
+], function ($api) {
+
+    // 测试
+    $api->get('user', 'SysUserController@index');
+
 });
