@@ -46,3 +46,10 @@ $ php artisan key:generate
 $ php artisan jwt:secret
 ```
 
+**5.执行迁移/数据填充**
+
+```bash
+$ php artisan migrate
+$ php artisan db:seed
+```
+
