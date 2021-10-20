@@ -24,8 +24,23 @@ $api->version('v1', [
 
     // sys_user 用户表
     $api->post('login', 'SysUserController@login'); // 登录
-    $api->post('user/list', 'SysUserController@list'); // 列表
-    $api->post('user/queryById/{id}', 'SysUserController@queryById'); // 通过id查询
+    $api->get('user/list', 'SysUserController@list'); // 列表
+    $api->get('user/update', 'SysUserController@update'); // 修改
+    $api->get('user/queryById/{id}', 'SysUserController@queryById'); // 通过id查询
+
+    // sys_activity 活动表
+    $api->get('activity/list', 'SysActivityController@listPage'); // 列表
+    $api->post('activity/add', 'SysActivityController@add'); // 新增
+    $api->put('activity/update', 'SysActivityController@update'); // 修改
+    $api->delete('activity/delete/{id}', 'SysActivityController@delete'); // 删除
+    $api->get('activity/queryById/{id}', 'SysActivityController@queryById'); // 通过id查询
+
+    // sys_activity_detail 活动明细表
+    $api->get('activity/detail/list/{id}', 'SysActivityDetailController@listPage'); // 列表
+    $api->post('activity/detail/add', 'SysActivityDetailController@add'); // 新增
+    $api->put('activity/detail/update', 'SysActivityDetailController@update'); // 修改
+    $api->delete('activity/detail/delete/{id}', 'SysActivityDetailController@delete'); // 删除
+    $api->get('activity/detail/queryById/{id}', 'SysActivityDetailController@queryById'); // 通过id查询
 
 
 });

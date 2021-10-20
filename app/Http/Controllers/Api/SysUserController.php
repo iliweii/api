@@ -259,7 +259,7 @@ class SysUserController extends Controller
             if ($user != null) {
                 $this->returned['result']['status'] = 'ok';
                 $this->returned['result']['msg'] = '查询用户数据成功';
-                $this->returned['data'] = $user[0];
+                $this->returned['data'] = $user;
             } else {
                 // 用户不存在
                 $this->returned['result']['status'] = 'warning';
