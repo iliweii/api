@@ -22,7 +22,10 @@ $api->version('v1', [
     'middleware' => ['bindings', 'cors'], //添加这个中间件才能使用模型绑定
 ], function ($api) {
 
-    // 测试
-    $api->get('user', 'SysUserController@index');
+    // sys_user 用户表
+    $api->post('login', 'SysUserController@login'); // 登录
+    $api->post('user/list', 'SysUserController@list'); // 列表
+    $api->post('user/queryById/{id}', 'SysUserController@queryById'); // 通过id查询
+
 
 });
