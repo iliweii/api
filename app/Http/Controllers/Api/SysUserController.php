@@ -99,13 +99,13 @@ class SysUserController extends Controller
             $this->returned['result']['code'] = 200;
             $this->returned['result']['status'] = 'warning';
             $this->returned['result']['msg'] = '必传参数不能为空';
-            response()->json($this->returned);
+            return response()->json($this->returned);
         } else if ($this->getUser($username) != null) {
             // 用户名重复
             $this->returned['result']['code'] = 200;
             $this->returned['result']['status'] = 'warning';
             $this->returned['result']['msg'] = '用户名重复';
-            response()->json($this->returned);
+            return response()->json($this->returned);
         }
         $nickname = $Request->input('nickname');
         $nickname = $nickname == null ? $username : $nickname;
@@ -158,7 +158,7 @@ class SysUserController extends Controller
             $this->returned['result']['code'] = 200;
             $this->returned['result']['status'] = 'warning';
             $this->returned['result']['msg'] = '必传参数不能为空';
-            response()->json($this->returned);
+            return response()->json($this->returned);
         }
         // 获取用户
         $user = DB::table('sys_user')->where('id', $id)->first();
@@ -167,7 +167,7 @@ class SysUserController extends Controller
             $this->returned['result']['code'] = 200;
             $this->returned['result']['status'] = 'error';
             $this->returned['result']['msg'] = '用户不存在';
-            response()->json($this->returned);
+            return response()->json($this->returned);
         }
         // 接收参数并初始化参数
         $username = $Request->input('username');
