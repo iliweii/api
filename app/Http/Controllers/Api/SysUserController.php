@@ -100,6 +100,12 @@ class SysUserController extends Controller
             $this->returned['result']['status'] = 'warning';
             $this->returned['result']['msg'] = '必传参数不能为空';
             response()->json($this->returned);
+        } else if ($this->getUser($username) != null) {
+            // 用户名重复
+            $this->returned['result']['code'] = 200;
+            $this->returned['result']['status'] = 'warning';
+            $this->returned['result']['msg'] = '用户名重复';
+            response()->json($this->returned);
         }
         $nickname = $Request->input('nickname');
         $nickname = $nickname == null ? $username : $nickname;
@@ -155,15 +161,13 @@ class SysUserController extends Controller
             response()->json($this->returned);
         }
         // 获取用户
-        $user = DB::table('sys_user')->where('id', $id)->get();
-        if ($user == null || count($user) < 1) {
+        $user = DB::table('sys_user')->where('id', $id)->first();
+        if ($user == null) {
             // 用户不存在
             $this->returned['result']['code'] = 200;
             $this->returned['result']['status'] = 'error';
             $this->returned['result']['msg'] = '用户不存在';
             response()->json($this->returned);
-        } else {
-            $user = $user[0];
         }
         // 接收参数并初始化参数
         $username = $Request->input('username');
@@ -250,9 +254,9 @@ class SysUserController extends Controller
             // 获取用户
             $user = DB::table('sys_user')
                 ->where('id', $id)
-                ->get();
+                ->first();
             // 用户存在的情况
-            if (count($user) > 0) {
+            if ($user != null) {
                 $this->returned['result']['status'] = 'ok';
                 $this->returned['result']['msg'] = '查询用户数据成功';
                 $this->returned['data'] = $user[0];
@@ -279,15 +283,11 @@ class SysUserController extends Controller
         $user = null;
         // 信息匹配
         if (preg_match($preg_phone, $username)) {
-            $user = DB::table('sys_user')->where('phone', $username)->get();
+            $user = DB::table('sys_user')->where('phone', $username)->first();
         } else if (preg_match($preg_email, $username)) {
-            $user = DB::table('sys_user')->where('email', $username)->get();
+            $user = DB::table('sys_user')->where('email', $username)->first();
         } else {
-            $user = DB::table('sys_user')->where('username', $username)->get();
-        }
-        // 用户存在的情况
-        if (count($user) > 0) {
-            return $user[0];
+            $user = DB::table('sys_user')->where('username', $username)->first();
         }
         return $user;
     }
