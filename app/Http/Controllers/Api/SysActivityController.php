@@ -23,6 +23,10 @@ class SysActivityController extends Controller
     const ACTIVITY_TYPE_3 = "countdown"; // 倒计时
     const ACTIVITY_TYPE_3A = "countdown_chsi"; // 考研倒计时
 
+    // 购买状态
+    const BUY_STS_NONE = 1; // 未购买
+    const BUY_STS_DONE = 2; // 已购买
+
     /**
      * 活动列表
      * @return response
@@ -49,12 +53,29 @@ class SysActivityController extends Controller
         // 获取活动
         $activity = DB::table('sys_activity')
             ->where([
-                ['act_start', '>=', date("Y-m-d")],
-                ['act_end', '<=', date("Y-m-d")],
+                ['act_start', '<=', date("Y-m-d")],
+                ['act_end', '>=', date("Y-m-d")],
                 ['status', '=', self::ACTIVITY_STATUS_NORMAL],
             ])
             ->orderBy('created_at', 'desc')
             ->get();
+        foreach ($activity as $act) {
+            $detail = DB::table('sys_activity_detail')
+                ->where('act_id', $act->id)->get();
+            $budget_use = 0;
+            $cost_total = 0;
+            $buyed_num = 0;
+            $total_num = count($detail);
+            foreach ($detail as $d) {
+                $budget_use += $d->budget;
+                $cost_total += $d->cost;
+                if ($d->buy_sts == self::BUY_STS_DONE) $buyed_num++;
+            }
+            $act->budget_use = $budget_use;
+            $act->cost_total = $cost_total;
+            $act->buyed_num = $buyed_num;
+            $act->total_num = $total_num;
+        }
         // 预设返回状态
         $this->returned['result']['code'] = 200;
         $this->returned['result']['status'] = 'ok';
@@ -79,7 +100,7 @@ class SysActivityController extends Controller
         $budget = $Request->input('budget');
         $create_by = $Request->input('create_by');
         $remark = $Request->input('remark');
-        // 新增用户DB
+        // 新增活动DB
         $id = DB::table('sys_activity')->insertGetId([
             'act_name' => $act_name,
             'act_desc' => $act_desc,
