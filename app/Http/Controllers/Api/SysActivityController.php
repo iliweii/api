@@ -65,16 +65,16 @@ class SysActivityController extends Controller
             $budget_use = 0;
             $cost_total = 0;
             $buyed_num = 0;
-            $total_num = count($detail);
             foreach ($detail as $d) {
                 $budget_use += $d->budget;
                 $cost_total += $d->cost;
                 if ($d->buy_sts == self::BUY_STS_DONE) $buyed_num++;
             }
             $act->budget_use = $budget_use;
+            $act->budget_over = $act->budget - $budget_use;
             $act->cost_total = $cost_total;
             $act->buyed_num = $buyed_num;
-            $act->total_num = $total_num;
+            $act->total_num = count($detail);
         }
         // 预设返回状态
         $this->returned['result']['code'] = 200;
