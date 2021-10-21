@@ -37,7 +37,7 @@ $api->version('v1', [
 
     // sys_activity_detail 活动明细表
     $api->get('activity/detail/list/{id}', 'SysActivityDetailController@listPage'); // 列表
-    $api->post('activity/detail/add', 'SysActivityDetailController@add'); // 新增
+    $api->get('activity/detail/add', 'SysActivityDetailController@add'); // 新增 临时用get
     $api->put('activity/detail/update', 'SysActivityDetailController@update'); // 修改
     $api->delete('activity/detail/delete/{id}', 'SysActivityDetailController@delete'); // 删除
     $api->get('activity/detail/queryById/{id}', 'SysActivityDetailController@queryById'); // 通过id查询
